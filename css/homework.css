@@ -1,0 +1,124 @@
+body {
+	width: 960px;
+	font-size: 100%;
+	margin: auto;
+	font-family: "Helvetica";
+	line-height: 1.4;
+}
+
+footer, #logo {
+	background: #F1A95C;
+	font-family: "Gill Sans";
+	font-weight: normal;
+	color: #4D4D4D;
+	padding: 15px;
+	margin-top: 0;
+	overflow: auto;
+}
+
+#copyright {
+	float: left;
+}
+
+#extra {
+	float: right;
+}
+
+h1 {
+	background: linear-gradient(to right, white, #CECECE, #EBE6E2);
+	font-size: 2em;
+	margin-top: 45px;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+p {
+	text-indent: 20px;
+}
+
+blockquote {
+	font-style: italic;
+	font-family: "Georgia";
+	border-left:1px solid #CECECE;
+	padding-left: 20px;
+}
+
+section {
+	overflow: auto;
+}
+
+figure {
+	display: inline-block;
+	float:left;
+	margin: 0px;
+	padding: 5px;
+	border: 1px solid #CECECE;
+	border-radius: 10px;
+}
+
+figure.first {
+	margin-left: 20px;  
+}
+
+figure.second {
+	margin-left: 30px;  
+}
+
+figure.third {
+	margin-left: 50px;
+}
+
+figcaption {
+	text-align: center;
+	background: #F1A95C;
+	font-style: italic;
+	font-weight: bold;
+	font-size: small;
+	opacity: 0.75;
+	border-radius: 5px; 
+	padding: 7px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table, tr, th, td {
+	border: 1px solid #CECECE;
+}
+
+td, th {
+	padding: 5px;
+	text-align: center;
+}
+
+th {
+	background: white;
+}
+
+tr:nth-child(even) {
+    background-color: #E5E5FF;
+}
+
+tr:nth-child(odd) {
+    background-color: #F0F0FF;
+}
+
+section code {
+	background: #38342E;
+	color: #9BFF9B;
+	padding: 10px;
+	white-space: pre;
+	display: block;
+}
+
+p code {
+	background: white;
+	color: #325095;
+	padding: 0;
+	font-size: 1.4em;
+	display: inline;
+}
