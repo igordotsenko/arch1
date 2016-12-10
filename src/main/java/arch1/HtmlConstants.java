@@ -1,3 +1,5 @@
+package arch1;
+
 public interface HtmlConstants {
     String ENCODING = "<head>\n"
               + "<meta charset=\"UTF-8\">\n"
