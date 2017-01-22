@@ -1,20 +1,25 @@
 package arch2.router.frontcontroller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import arch2.model.Category;
 import arch2.router.RouteNotFoundException;
 import arch2.router.Router;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 
 @WebServlet("/")
@@ -23,12 +28,17 @@ public class FrontController extends HttpServlet {
     // TODO move to configs
     private final static String TEMPLATES_PATH = "templates/";
     private final static String RESOURCES_PATH = "resources/";
+    private Configuration templateConfig = new Configuration();
+    
 
     @Override
     public void init() throws ServletException {
         try {
             router = new Router(getServletContext().getRealPath(RESOURCES_PATH + "routes.conf"));
-        } catch (FileNotFoundException e) {
+            String templateLoadingDirectory = getServletContext().getRealPath(RESOURCES_PATH + TEMPLATES_PATH);
+            getServletContext().log("Template loading directory: " + templateLoadingDirectory);
+            templateConfig.setDirectoryForTemplateLoading(new File(templateLoadingDirectory));
+        } catch (Exception e) {
             throw new ServletException(e);
         }
     }
@@ -39,22 +49,27 @@ public class FrontController extends HttpServlet {
             // Get from request url name of needed template
             String webAppPath = getServletContext().getContextPath();
             String templateUrlString = req.getRequestURI().replace(webAppPath, "");
+            getServletContext().log("Template url string: " + templateUrlString);
             
-            // Construct full path to needed template
-            String templateRoute = router.getRoute(URI.create(templateUrlString)).getTemplateName();
-            String fullPath = getServletContext().getRealPath(RESOURCES_PATH + TEMPLATES_PATH + templateRoute);
+            // Get template name
+            String templateName = router.getRoute(URI.create(templateUrlString)).getTemplateName();
+            getServletContext().log("Template name: " + templateName);
             
-            // Send template as response
-            printFile(resp.getOutputStream(), new File(fullPath));
-        } catch (RouteNotFoundException e) {
+            // Set templates values
+            Map<String, Object> templateValues = new HashMap<>();
+            templateValues.put("user", "Father");
+            templateValues.put("latestProduct", new Category("zalupa", "www.devclub.com"));
+            renderTemplate(resp, templateName, templateValues);
+        } catch (RouteNotFoundException |  TemplateException e) {
             resp.getOutputStream().print(e.getMessage());
         }
     }
     
-    private void printFile(ServletOutputStream out, File file) throws IOException {
-        Scanner scanner = new Scanner(file);
-        while (scanner.hasNextLine()) {
-            out.println(scanner.nextLine());
-        }
+    private void renderTemplate(HttpServletResponse response, String templateName, Map<String, Object> values) 
+            throws IOException, TemplateException {
+        
+        Template template = templateConfig.getTemplate(templateName);
+        Writer templateWriter = new OutputStreamWriter(response.getOutputStream());
+        template.process(values, templateWriter);
     }
 }

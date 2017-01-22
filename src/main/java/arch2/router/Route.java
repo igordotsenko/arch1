@@ -28,7 +28,7 @@ public class Route {
         }
         
         routeStringParts = routeString.substring(1).split("/", 0);
-        templateName = String.join("-", routeStringParts) + ".tpl";
+        templateName = String.join("-", routeStringParts) + ".ftl";
     }
     
     public boolean matchesUri(URI uri) {

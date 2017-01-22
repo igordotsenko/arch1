@@ -21,7 +21,7 @@ public class RouterTest {
         URI uri5 = URI.create("/gallery/cats/");
     
         assertEquals(ROOT, router.getRoute(uri0).getTemplateName());
-        assertEquals("news.tpl", router.getRoute(uri1).getTemplateName());
+        assertEquals("news.ftl", router.getRoute(uri1).getTemplateName());
         assertEquals("news-[category].tpl", router.getRoute(uri2).getTemplateName());
         assertEquals("news-[category]-[article].tpl", router.getRoute(uri3).getTemplateName());
         assertEquals("gallery.tpl", router.getRoute(uri4).getTemplateName());
