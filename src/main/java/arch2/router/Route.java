@@ -2,8 +2,6 @@ package arch2.router;
 
 import java.net.URI;
 
-import com.sun.istack.internal.NotNull;
-
 @SuppressWarnings("WeakerAccess")
 public class Route {
     public static final String ROOT = "/";
@@ -11,7 +9,7 @@ public class Route {
     private String[] routeStringParts;
     private String templateName;
     
-    public Route(@NotNull String routeString) {
+    public Route(String routeString) {
         if (routeString == null || "".equals(routeString)) {
             throw new IllegalArgumentException("Route cannot be empty");
         }
