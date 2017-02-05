@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import arch2.model.Category;
+import arch2.data.DataRepository;
+import arch2.data.StubDataRepositoryImpl;
 import arch2.router.RouteNotFoundException;
 import arch2.router.Router;
 import freemarker.template.Configuration;
@@ -29,6 +30,7 @@ public class FrontController extends HttpServlet {
     private final static String TEMPLATES_PATH = "templates/";
     private final static String RESOURCES_PATH = "resources/";
     private Configuration templateConfig = new Configuration();
+    private DataRepository dataRepository = new StubDataRepositoryImpl();
     
 
     @Override
@@ -38,6 +40,7 @@ public class FrontController extends HttpServlet {
             String templateLoadingDirectory = getServletContext().getRealPath(RESOURCES_PATH + TEMPLATES_PATH);
             getServletContext().log("Template loading directory: " + templateLoadingDirectory);
             templateConfig.setDirectoryForTemplateLoading(new File(templateLoadingDirectory));
+            dataRepository.initialize();
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -56,9 +59,9 @@ public class FrontController extends HttpServlet {
             getServletContext().log("Template name: " + templateName);
             
             // Set templates values
+            // TODO create templates mapping to rendering functions
             Map<String, Object> templateValues = new HashMap<>();
-            templateValues.put("user", "Father");
-            templateValues.put("latestProduct", new Category("zalupa", "www.devclub.com"));
+            templateValues.put("categories", dataRepository.getAllCategories());
             renderTemplate(resp, templateName, templateValues);
         } catch (RouteNotFoundException |  TemplateException e) {
             resp.getOutputStream().print(e.getMessage());
